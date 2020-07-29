@@ -1,0 +1,14 @@
+{ "columns":16,
+ "image":"..\/..\/..\/..\/Users\/dsalt\/OneDrive\/Documents\/RPGVXAce\/Project1\/Graphics\/Tilesets\/Outside_A4.png",
+ "imageheight":480,
+ "imagewidth":512,
+ "margin":0,
+ "name":"Outside_A4",
+ "spacing":0,
+ "tilecount":240,
+ "tiledversion":"1.4.1",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":1.4
+}
