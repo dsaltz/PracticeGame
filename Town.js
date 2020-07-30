@@ -30,7 +30,7 @@ class Town extends Phaser.Scene{
 
 		level.setCollisionByProperty({ collides: true });
 
-		level.setCollisionByProperty({ door: true });
+//		level.setCollisionByProperty({ door: true });
 		this.moveGroup = this.physics.add.staticGroup();
 		var tileProps;
 		level.forEachTile(tile => {
@@ -69,12 +69,12 @@ class Town extends Phaser.Scene{
 		// create player
 		var icon = 1;
 		this.player = new Player(this, spawnPoint.x, spawnPoint.y, icon);
-		this.physics.add.collider(this.player, level);
+		this.physics.add.collider(this.player.sprite, level);
 
 		this.input.keyboard.on('keyup', function(e){
 			if (e.key=="j"){
-				const x = this.player.x;
-				const y = this.player.y;
+				const x = this.player.sprite.body.x;
+				const y = this.player.sprite.body.y;
 				switch (icon) {
 					case 10:
 						icon = 49;
@@ -87,7 +87,12 @@ class Town extends Phaser.Scene{
 				};
 				this.player.destroy();
 				this.player = new Player(this, x, y, icon);
+				this.physics.add.collider(this.player.sprite, level);
 			};
+			if (e.key=="l") {
+				console.log(this.player.sprite.body.x);
+				console.log(this.player.sprite.body.y);
+			};	
 		}, this);
 	}
 
