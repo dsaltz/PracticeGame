@@ -40,7 +40,7 @@ class Town extends Phaser.Scene{
 				const y = tile.getCenterY();
 				this.moveGroup.create(x,y,'door');
 			}
-		});
+		})
 		this.moveGroup.setVisible(false);
 
 		// determine where we're starting from
@@ -73,8 +73,8 @@ class Town extends Phaser.Scene{
 
 		this.input.keyboard.on('keyup', function(e){
 			if (e.key=="j"){
-				const x = this.player.sprite.body.x;
-				const y = this.player.sprite.body.y;
+				const x = this.player.sprite.body.x+16;
+				const y = this.player.sprite.body.y+16;
 				switch (icon) {
 					case 10:
 						icon = 49;
@@ -92,11 +92,25 @@ class Town extends Phaser.Scene{
 			if (e.key=="l") {
 				console.log(this.player.sprite.body.x);
 				console.log(this.player.sprite.body.y);
+				console.log(this.player.sprite.body.velocity);
 			};	
+			if (e.key=="p") {
+				this.cameras.main.fadeOut(1000, 0, 0, 0);
+				this.scene.start('Pub');
+			}
 		}, this);
+		this.cameras.main.fadeIn(1000, 0, 0, 0);
 	}
 
 	update(){
+
+		if (this.physics.collide(this.player, this.moveGroup)) {
+			console.log('hello');
+			this.cameras.main.fadeOut(1000, 0, 0, 0);
+			this.scene.start('Pub');
+		};
+
 		this.player.update();
+
 	}
 }
