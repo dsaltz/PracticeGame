@@ -1,0 +1,18 @@
+{
+	"monsters": {
+		"id": 1,
+		"name": "Goblin",
+		"image": "goblin.jpg",
+		"strength": 10,
+		"health": 25,
+		"magic": 2	
+	},
+	{
+		"id": 2,
+		"name": "Fairy",
+		"image": "fairy.jpg",
+		"strength": 2,
+		"health": 20,
+		"magic": 12
+	}
+}

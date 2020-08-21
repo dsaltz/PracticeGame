@@ -22,6 +22,8 @@ class Pub extends Phaser.Scene{
 		const tileset4 = map.addTilesetImage('Outside_A4', 'outsideA4');
 		const ground = map.createStaticLayer('Ground', [tileset4], 0, 0);
 		const level = map.createStaticLayer('Level', [tileset1, tileset2, tileset3], 0, 0);
+		const upper = map.createStaticLayer('Upper', [tileset3], 0, 0);
+		this.cameras.main.setBounds(0, 0, 320, 320).setZoom(2);
 
 		// create collision, doors, overlap
 
@@ -30,54 +32,79 @@ class Pub extends Phaser.Scene{
 		// level.setCollisionByProperty({ door: true });
 		this.moveGroup = this.physics.add.staticGroup();
 		var tileProps;
-		level.forEachTile(tile => {
+		ground.forEachTile(tile => {
 			tileProps = tile.properties;
 			if (tileProps['door'] == true) {
+				console.log('added');
 				const x = tile.getCenterX();
 				const y = tile.getCenterY();
 				this.moveGroup.create(x,y,'door');
 			}
+			else {
+				console.log('not added');
+			}
 		});
+
+		console.log(this.moveGroup);
+
 		this.moveGroup.setVisible(false);
 
 		// determine where we're starting from
 		var spawnPoint = map.findObject('Objects', obj => obj.name === 'Spawn');
 
 		// create player
-		var icon = 1;
-		this.player = new Player(this, spawnPoint.x, spawnPoint.y, icon);
-		this.physics.add.collider(this.player.sprite, level);
+		this.player = new Player(this, spawnPoint.x, spawnPoint.y, hero);
+		this.player.sprite.setTexture('characters5', hero+36);
+		this.createPlayer(level);
 
 		this.input.keyboard.on('keyup', function(e){
 			if (e.key=="j"){
 				const x = this.player.sprite.body.x+16;
 				const y = this.player.sprite.body.y+16;
-				switch (icon) {
+				switch (hero) {
 					case 10:
-						icon = 49;
+						hero = 49;
 						break;
 					case 58:
-						icon = 1;
+						hero = 1;
 						break;
 					default: 
-						icon+=3;
+						hero+=3;
 				};
 				this.player.destroy();
-				this.player = new Player(this, x, y, icon);
-				this.physics.add.collider(this.player.sprite, level);
-			};
-			if (e.key=="l") {
-				console.log(this.player.sprite.body.x);
-				console.log(this.player.sprite.body.y);
-				console.log(this.player.sprite.body.position);
-				console.log(this.player.sprite.body.facing);
+				this.player = new Player(this, x, y, hero);
+				this.player.sprite.setTexture('characters5', this.icon+36)
+				this.createPlayer(level);
 			};
 		}, this);
 		this.cameras.main.fadeIn(1000, 0, 0, 0);
 	}
 
 	update(){
+
+		if (this.physics.collide(this.player.sprite, this.moveGroup)) {
+			spawn = 'pub';
+			this.cameras.main.fadeOut(1000, 0, 0, 0);
+			this.scene.start('Town');
+		};
+
 		this.player.update();
+
+	}
+	createPlayer(level) {
+		
+		// for adding colliders
+		this.physics.add.collider(this.player.sprite, level);
+		this.player.sprite.body.setCollideWorldBounds = true;
+
+		/*
+		this.physics.world.on('worldbounds', function(body) {
+			console.log('collision');
+			spawn = 'Pub';
+			this.cameras.main.fadeOut(1000, 0, 0, 0);
+			this.scene.start('Town');
+		}, this);
+		*/
 
 	}
 }

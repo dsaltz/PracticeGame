@@ -5,9 +5,13 @@ var config = {
 	physics: {
 		default: 'arcade',
 	},
-	scene: [ Town ]
+	scene: [ Town, Pub ]
 };
 
 var spawn;
+
+var face = 0;
+
+var hero = 1;
 
 var game = new Phaser.Game(config);
