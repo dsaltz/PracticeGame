@@ -7,11 +7,11 @@ class Player extends Phaser.GameObjects.Sprite {
 		this.x = x;
 		this.y = y;
 
-		//create the an
+		//create the animations
 		this.animate(scene);
 
-		//Create physics-basedimations sprite to move
-		this.sprite = scene.physics.add.sprite(this.x, this.y, 'characters5', this.icon);
+		//Create physics-based sprite to move
+		this.sprite = scene.physics.add.sprite(this.x, this.y, 'characters5', this.icon+face);
 		this.sprite.body.collideWorldBounds=true;
 		this.sprite.body.setGravityY(0);
 
@@ -20,22 +20,6 @@ class Player extends Phaser.GameObjects.Sprite {
 		this.key_D = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 		this.key_S = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 		this.key_W = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-
-/*		scene.input.keyboard.on('keyup', function(e){
-			if (e.key=="w") {
-				this.sprite.setTexture('characters5', this.icon+36);
-			};
-			if (e.key=="s"){
-				this.sprite.setTexture('characters5', this.icon);
-			};
-			if (e.key=="a"){
-				this.sprite.setTexture('characters5', this.icon+12);
-			};
-			if (e.key=="d") {
-				this.sprite.setTexture('characters5', this.icon+24);
-			};
-		}, this);
-*/	
 	}
 
 	update() {
@@ -43,7 +27,7 @@ class Player extends Phaser.GameObjects.Sprite {
 		const speed = 175;
 		const prevVelocity = this.sprite.body.velocity.clone();
 
-		//this.player.body.setVelocity(0);
+		// Set character movement speed
 
 		if(this.key_A.isDown) {
 			this.sprite.body.setVelocityX(-speed);
@@ -65,51 +49,35 @@ class Player extends Phaser.GameObjects.Sprite {
 			this.sprite.body.setVelocityY(0);
 		}
 
+		// Run animations depending on direction and set character face for stop sprite
 
 		if(this.key_A.isDown) {
 			this.sprite.anims.play('left'+this.icon, true);
+			face=12;
 		}
 		else if(this.key_D.isDown) {
 			this.sprite.anims.play('right'+this.icon, true);
+			face=24;
 		}
 		else if(this.key_W.isDown) {
 			this.sprite.anims.play('up'+this.icon, true);
+			face=36;
 		}
 		else if(this.key_S.isDown) {
 			this.sprite.anims.play('down'+this.icon, true);
+			face=0;
 		}
 		else {
-			this.sprite.anims.stop();
-
-			if (prevVelocity.x < 0) this.sprite.setTexture('characters5', this.icon+12);
-			else if (prevVelocity.x > 0) this.sprite.setTexture('characters5', this.icon+24);
-			else if (prevVelocity.y < 0) this.sprite.setTexture('characters5', this.icon+36);
-			else if (prevVelocity.y > 0) this.sprite.setTexture('characters5', this.icon);
-		
-		}
-
-/*		this.scene.input.keyboard.on('keyup', function(e){
-			if (prevVelocity == 0) {
-				if (e.key=="w") {
-					this.sprite.setTexture('characters5', this.icon+36);
-				};
-				if (e.key=="s"){
-					this.sprite.setTexture('characters5', this.icon);
-				};
-				if (e.key=="a"){
-					this.sprite.setTexture('characters5', this.icon+12);
-				};
-				if (e.key=="d") {
-					this.sprite.setTexture('characters5', this.icon+24);
-				};
-			};
-		}, this);
-*/		
+			this.sprite.anims.stop();	
+			this.sprite.setTexture('characters5', this.icon+face);
+		}		
 	}
 
 	destroy() {
 		this.sprite.destroy();
 	}
+
+	// Create animations
 
 	animate(scene) {
 		this.scene = scene;
@@ -157,8 +125,5 @@ class Player extends Phaser.GameObjects.Sprite {
 			};
 		}
 		while (pc <= 58);
-	}
-
-	stop_animation(prevVelocity) {
 	}
 }

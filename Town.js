@@ -1,5 +1,3 @@
-//import Player from '../Player.js';
-
 class Town extends Phaser.Scene{
 	constructor() {
 		super({key: "Town"});
@@ -7,9 +5,9 @@ class Town extends Phaser.Scene{
 
 	preload() {
 		this.load.spritesheet('characters5', 'assets/Actor5.png', { frameWidth: 32, frameHeight: 32});
-		this.load.image('tiles1', 'assets/Outside_A4.png');
-		this.load.image('tiles2', 'assets/Outside_B.png');
-		this.load.image('tiles3', 'assets/Outside_C.png');
+		this.load.image('outsideA4', 'assets/Outside_A4.png');
+		this.load.image('outsideB', 'assets/Outside_B.png');
+		this.load.image('outsideC', 'assets/Outside_C.png');
 		this.load.tilemapTiledJSON('map', 'assets/Town.json');
 	}
 
@@ -17,9 +15,9 @@ class Town extends Phaser.Scene{
 		
 		// set map
 		const map = this.make.tilemap({ key: 'map' });
-		const tileset1 = map.addTilesetImage('Outside_A4', 'tiles1');
-		const tileset2 = map.addTilesetImage('Outside_B', 'tiles2');
-		const tileset3 = map.addTilesetImage('Outside_C', 'tiles3');
+		const tileset1 = map.addTilesetImage('Outside_A4', 'outsideA4');
+		const tileset2 = map.addTilesetImage('Outside_B', 'outsideB');
+		const tileset3 = map.addTilesetImage('Outside_C', 'outsideC');
 		const ground = map.createStaticLayer('Ground', [tileset1, tileset2], 0, 0);
 		const level = map.createStaticLayer('Level', [tileset2, tileset3], 0, 0);
 		const upper = map.createStaticLayer('Upper', [tileset2, tileset3], 0, 0);
@@ -67,45 +65,34 @@ class Town extends Phaser.Scene{
 		}
 
 		// create player
-		var icon = 1;
-		this.player = new Player(this, spawnPoint.x, spawnPoint.y, icon);
+		this.player = new Player(this, spawnPoint.x, spawnPoint.y, hero);
 		this.physics.add.collider(this.player.sprite, level);
 
 		this.input.keyboard.on('keyup', function(e){
 			if (e.key=="j"){
 				const x = this.player.sprite.body.x+16;
 				const y = this.player.sprite.body.y+16;
-				switch (icon) {
+				switch (hero) {
 					case 10:
-						icon = 49;
+						hero = 49;
 						break;
 					case 58:
-						icon = 1;
+						hero = 1;
 						break;
 					default: 
-						icon+=3;
+						hero+=3;
 				};
 				this.player.destroy();
-				this.player = new Player(this, x, y, icon);
+				this.player = new Player(this, x, y, hero);
 				this.physics.add.collider(this.player.sprite, level);
 			};
-			if (e.key=="l") {
-				console.log(this.player.sprite.body.x);
-				console.log(this.player.sprite.body.y);
-				console.log(this.player.sprite.body.velocity);
-			};	
-			if (e.key=="p") {
-				this.cameras.main.fadeOut(1000, 0, 0, 0);
-				this.scene.start('Pub');
-			}
 		}, this);
 		this.cameras.main.fadeIn(1000, 0, 0, 0);
 	}
 
 	update(){
 
-		if (this.physics.collide(this.player, this.moveGroup)) {
-			console.log('hello');
+		if (this.physics.collide(this.player.sprite, this.moveGroup)) {
 			this.cameras.main.fadeOut(1000, 0, 0, 0);
 			this.scene.start('Pub');
 		};
