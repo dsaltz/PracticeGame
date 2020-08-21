@@ -6,8 +6,6 @@ class Player extends Phaser.GameObjects.Sprite {
 		this.icon = icon;
 		this.x = x;
 		this.y = y;
-		console.log(this.x);
-		console.log(this.y);
 
 		//create the an
 		this.animate(scene);
@@ -23,6 +21,21 @@ class Player extends Phaser.GameObjects.Sprite {
 		this.key_S = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
 		this.key_W = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 
+/*		scene.input.keyboard.on('keyup', function(e){
+			if (e.key=="w") {
+				this.sprite.setTexture('characters5', this.icon+36);
+			};
+			if (e.key=="s"){
+				this.sprite.setTexture('characters5', this.icon);
+			};
+			if (e.key=="a"){
+				this.sprite.setTexture('characters5', this.icon+12);
+			};
+			if (e.key=="d") {
+				this.sprite.setTexture('characters5', this.icon+24);
+			};
+		}, this);
+*/	
 	}
 
 	update() {
@@ -72,7 +85,26 @@ class Player extends Phaser.GameObjects.Sprite {
 			else if (prevVelocity.x > 0) this.sprite.setTexture('characters5', this.icon+24);
 			else if (prevVelocity.y < 0) this.sprite.setTexture('characters5', this.icon+36);
 			else if (prevVelocity.y > 0) this.sprite.setTexture('characters5', this.icon);
-		}		
+		
+		}
+
+/*		this.scene.input.keyboard.on('keyup', function(e){
+			if (prevVelocity == 0) {
+				if (e.key=="w") {
+					this.sprite.setTexture('characters5', this.icon+36);
+				};
+				if (e.key=="s"){
+					this.sprite.setTexture('characters5', this.icon);
+				};
+				if (e.key=="a"){
+					this.sprite.setTexture('characters5', this.icon+12);
+				};
+				if (e.key=="d") {
+					this.sprite.setTexture('characters5', this.icon+24);
+				};
+			};
+		}, this);
+*/		
 	}
 
 	destroy() {
@@ -125,5 +157,8 @@ class Player extends Phaser.GameObjects.Sprite {
 			};
 		}
 		while (pc <= 58);
+	}
+
+	stop_animation(prevVelocity) {
 	}
 }
